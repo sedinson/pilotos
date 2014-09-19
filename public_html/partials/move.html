@@ -1,0 +1,211 @@
+<style>
+    #idproceso {
+        background: #fff;
+        border: none;
+        appearance: button;
+    }
+    
+    .miti p {
+        width: 48%;
+        margin: 5px 1%;
+        position: relative;
+        float: left;
+    }
+    
+    .miti label, .miti input, .miti select, .miti textarea {
+        width: 100%;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Maniobras 
+            <select ng-model="idproceso" ng-change="changeMove(idproceso)" id="idproceso">
+                <option ng-repeat="process in processes" value="{{process.idproceso}}">{{process.nombre}}</option>
+            </select>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Lista de Maniobras
+
+                <div class="panel-buttons">
+                    <button type="button" ng-disabled="process.fin || !process.create" ng-click="_new()" id="new-app" class="btn btn-success">Crear Maniobra</button>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                
+                <div class="panel panel-default" ng-repeat="event in events">
+                    <div class="panel-heading">
+                        {{ event.movimiento }} - {{ event.piloto }}
+                        <div class="panel-buttons">
+                            {{(event.id_estado == 1)? '' : 'Cerrado'}}
+                            <button type="button" ng-click="finalize(event)" ng-disabled="event.id_estado != 1" id="new-app" class="btn btn-danger">Cerrar Movimientos</button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Terminal</th>
+                                        <th>Muelle</th>
+                                        <th>Profundidad</th>
+                                        <th>Proa</th>
+                                        <th>Popa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{event.terminal}}</td>
+                                        <td>{{event.muelle}}</td>
+                                        <td>{{event.profundidad}}</td>
+                                        <td>{{event.proa}}</td>
+                                        <td>{{event.popa}}</td>
+                                    </tr>
+                                </tbody>
+                                
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5"><b>Observación:</b> {{event.observacion}}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="5">
+                                            <table class="table tablesorter table-striped table-bordered table-hover" style="margin-top: 20px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tiempo</th>
+                                                        <th>Fecha</th>
+                                                        <th>Hora</th>
+                                                        <td ng-show="event.id_estado == 1">
+                                                            <b class="icon-remove" style="text-align: center; width: 100%; display: block;"></b>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                
+                                                <tbody>
+                                                    <tr ng-repeat="tiempo in event.tiempos">
+                                                        <td>{{ tiempo.tiempo }}</td>
+                                                        <td>{{ tiempo.fecha }}</td>
+                                                        <td>{{ tiempo.hora }}</td>
+                                                        <td ng-show="event.id_estado == 1"><b ng-click="remove(tiempo)" class="st-48 icon-remove"></b></td>
+                                                    </tr>
+                                                </tbody>
+                                                
+                                                <tfoot>
+                                                    <tr ng-show="event.id_estado == 1">
+                                                        <td>
+                                                            <select ng-model="event.time.idtiempo">
+                                                                <option ng-repeat="t in listas.tiempo" value="{{ t.idtiempo }}">{{ t.tiempo }}</option>
+                                                            </select>
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <input type="text" ng-model="event.time.fecha" />
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <input type="text" ng-model="event.time.hora" />
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <b ng-click="edit(event)" class="st-16 icon-plus"></b>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<script type="text/ng-template" id="newMove.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Crear Maniobra</h3>
+    </div>
+    <div class="modal-body">
+        <div style="width: 500px; overflow: auto; margin: 0 auto;">
+            <div class="miti">
+                <p>
+                    <label>Piloto: </label>
+                    <select ng-model="event.idpiloto">
+                        <option ng-repeat="piloto in listas.piloto" value="{{piloto.idpiloto}}">{{piloto.nombre}}</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label>Movimiento: </label>
+                    <select ng-model="event.idestado_">
+                        <option ng-repeat="estado_ in listas.estado_" value="{{estado_.idestado_}}">{{estado_.nombre}}</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label>Terminal: </label>
+                    <select ng-model="event.idterminal">
+                        <option ng-repeat="terminal in listas.terminal" value="{{terminal.idterminal}}">{{terminal.nombre}}</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label>Muelle: </label>
+                    <input type="text" ng-model="event.muelle" />
+                </p>
+        
+                <p style="width: 31%;">
+                    <label>Calado Proa: </label>
+                    <input type="text" ng-model="event.proa" />
+                </p>
+
+                <p style="width: 31%;">
+                    <label>Calado Popa: </label>
+                    <input type="text" ng-model="event.popa" />
+                </p>
+
+                <p style="width: 31%;">
+                    <label>Profundidad: </label>
+                    <input type="text" ng-model="event.profundidad" />
+                </p>
+
+                <p style="width: 55%;">
+                    <label>Fecha: </label>
+                    <datepicker ng-model="event._fecha" show-weeks="false" class="well well-sm"></datepicker>
+                </p>
+
+                <p style="width: 40%;">
+                    <label>Hora: </label>
+                    <timepicker ng-model="event._hora" hour-step="1" minute-step="1" show-meridian="true"></timepicker>
+                </p>
+
+                <p style="width: 40%;">
+                    <label>Observaciones: </label>
+                    <textarea ng-model="event.observacion"></textarea>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-success" ng-click="ok()">Crear Maniobra</button>
+    </div>
+</script>

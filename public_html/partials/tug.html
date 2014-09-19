@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Remolcadores</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Remolcadores
+
+                <div class="panel-buttons">
+                    <button type="button" ng-click="_new()" id="new-app" class="btn btn-success">Nuevo Remolcador</button>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter table-striped table-bordered table-hover" id="table-agency">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>IMO</th>
+                                <th>Bollard Pull</th>
+                                <td><b class="icon-edit"></b></td>
+                                <td><b class="icon-remove"></b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tug in tugs">
+                                <td>{{tug.nombre}}</td>
+                                <td>{{tug.imo}}</td>
+                                <td>{{tug.bollard_pull}}</td>
+                                <td>
+                                    <span ng-click="edit(tug)" class="st-16 icon-edit"></span>
+                                </td>
+                                <td>
+                                    <span ng-click="remove(tug)" class="st-48 icon-remove"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<script type="text/ng-template" id="formEdit.html">
+    <style>
+        p label, p select, p input, p textarea {
+            width: 100%;
+            resize: none;
+        }
+    </style>
+    
+    <div class="modal-header">
+        <h3 class="modal-title">Crear Remolcador</h3>
+    </div>
+    
+    <div class="modal-body">
+        <p>
+            <label for="nombre">Nombre: </label>
+            <input type="text" ng-model="tug.nombre" />
+        </p>
+
+        <p>
+            <label for="nombre">IMO: </label>
+            <input type="text" ng-model="tug.imo" />
+        </p>
+
+        <p>
+            <label for="nombre">Bollard Pull: </label>
+            <input type="text" ng-model="tug.bollard_pull" />
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" ng-click="cancel()">Cancelar</button>
+        <button class="btn btn-success" ng-click="ok()">Crear Remolcador</button>
+    </div>
+</script>

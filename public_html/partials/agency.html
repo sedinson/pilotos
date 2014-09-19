@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Agencias</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Agencias Registradas
+
+                <div class="panel-buttons">
+                    <button type="button" ng-click="_new()" id="new-app" class="btn btn-success">Nueva Agencia</button>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter table-striped table-bordered table-hover" id="table-agency">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <td><b class="icon-edit"></b></td>
+                                <td><b class="icon-remove"></b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="agency in agencies">
+                                <td>{{agency.nombre}}</td>
+                                <td>{{agency.correo}}</td>
+                                <td>{{agency.telefono}}</td>
+                                <td>
+                                    <span ng-click="edit(agency)" class="st-16 icon-edit"></span>
+                                </td>
+                                <td>
+                                    <span ng-click="remove(agency)" class="st-48 icon-remove"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<script type="text/ng-template" id="formEdit.html">
+    <style>
+        p label, p select, p input, p textarea {
+            width: 100%;
+            resize: none;
+        }
+    </style>
+    
+    <div class="modal-header">
+        <h3 class="modal-title">Crear Agencia</h3>
+    </div>
+    
+    <div class="modal-body">
+        <p>
+            <label>Nombre: </label>
+            <input type="text" ng-model="agency.nombre" />
+        </p>
+
+        <p>
+            <label>Correo: </label>
+            <input type="text" ng-model="agency.correo" />
+        </p>
+
+        <p>
+            <label>Teléfono: </label>
+            <input type="text" ng-model="agency.telefono" />
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" ng-click="cancel()">Cancelar</button>
+        <button class="btn btn-success" ng-click="ok()">Crear Agencia</button>
+    </div>
+</script>
